@@ -1,0 +1,36 @@
+name: Deploy to PhysiQ hub
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout satellite
+        uses: actions/checkout@v4
+
+      - name: Checkout physiq hub
+        uses: actions/checkout@v4
+        with:
+          repository: physiodevapp/physiq
+          token: ${{ secrets.PHYSIQ_DEPLOY_TOKEN }}
+          path: physiq-hub
+
+      - name: Copy files to hub
+        run: |
+          mkdir -p physiq-hub/questionnaire
+          rsync -av --delete \
+            --exclude='.git' \
+            --exclude='.github' \
+            ./ physiq-hub/questionnaire/
+
+      - name: Commit and push to hub
+        run: |
+          cd physiq-hub
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add questionnaire/
+          git diff --cached --quiet || git commit -m "deploy: update questionnaire satellite"
+          git push

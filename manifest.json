@@ -1,0 +1,19 @@
+{
+  "name": "PhysiQ Cuestionarios",
+  "short_name": "PhysiQ-Q",
+  "description": "Cuestionarios clínicos validados para fisioterapia",
+  "start_url": "/physiq/questionnaire/",
+  "scope": "/physiq/questionnaire/",
+  "display": "standalone",
+  "background_color": "#0a0d12",
+  "theme_color": "#f59e0b",
+  "lang": "es",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
