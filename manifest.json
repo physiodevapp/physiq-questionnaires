@@ -1,5 +1,5 @@
 {
-  "name": "PhysiQ Cuestionarios",
+  "name": "PhysiQ Questionnaires",
   "short_name": "PhysiQ-Q",
   "description": "Cuestionarios clínicos validados para fisioterapia",
   "start_url": "/physiq/questionnaire/",
