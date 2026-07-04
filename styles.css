@@ -9,6 +9,7 @@
   --text3:   #5a6e8a;
   --bg:      #0a0d12;
   --surface: #111620;
+  --surface2: #171e2e;
   --danger:  #ef4444;
 }
 
@@ -286,20 +287,38 @@ html, body {
   flex: 1;
 }
 
-.home-title-row {
+/* ── Global summary card (mirrors physiq-motion's Resumen global) ── */
+.summary-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.summary-header {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  gap: 8px;
+  align-items: center;
 }
-
-.home-title {
+.summary-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1rem;
+  color: var(--accent);
+}
+.result-chips { display: flex; flex-wrap: wrap; gap: 6px; padding: 12px 16px; }
+.result-chip {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 5px 12px;
   font-family: 'DM Mono', monospace;
-  font-size: 0.7rem;
-  text-transform: uppercase;
-  letter-spacing: 0.09em;
-  color: var(--text3);
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.15s;
 }
+.result-chip:hover { opacity: 0.8; }
 
 .btn-copy {
   background: none;
@@ -344,6 +363,22 @@ html, body {
 }
 
 /* ── Category filter bar (mirrors physiq-wiki's Tests Especiales filters) ── */
+.cat-filter-scroll-wrap {
+  position: relative;
+  overflow: hidden;
+}
+.cat-filter-scroll-wrap::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 24px;
+  background: linear-gradient(to right, var(--bg), transparent);
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+.cat-filter-scroll-wrap.scrolled::before { opacity: 1; }
 .cat-filter-bar {
   display: flex;
   gap: 8px;
@@ -416,6 +451,7 @@ html, body {
   opacity: 0.55;
 }
 .q-card--done::before { opacity: 1; }
+.q-card--done { padding-bottom: 34px; }
 .q-card:hover  { border-color: var(--border2); }
 .q-card:active { transform: scale(0.97); }
 
@@ -449,17 +485,11 @@ html, body {
   font-weight: 400;
   color: var(--accent);
 }
-.q-card-bottom {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  margin-top: 4px;
-}
 .q-card-score {
   font-family: 'DM Mono', monospace;
   font-size: 0.9rem;
   font-weight: 500;
+  margin-top: 4px;
 }
 .q-card-interp {
   font-size: 0.72rem;
@@ -473,13 +503,17 @@ html, body {
   font-size: 11px;
   cursor: pointer;
   transition: border-color 0.2s, color 0.2s;
-  flex-shrink: 0;
   line-height: 1;
   -webkit-tap-highlight-color: transparent;
 }
 .btn-clear:hover, .btn-clear:active {
   border-color: rgba(239, 68, 68, 0.5);
   color: var(--danger);
+}
+.q-card-delete {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
 }
 
 /* ── Questionnaire view ─────────────────────────────────────── */
