@@ -385,6 +385,39 @@ function renderHome() {
     }
     grid.appendChild(card);
   });
+
+  renderGlobalSummary();
+}
+
+function renderGlobalSummary() {
+  const card  = document.getElementById('globalSummaryCard');
+  const chips = document.getElementById('globalSummaryChips');
+  if (!card) return;
+  if (!state.results.length) { card.style.display = 'none'; return; }
+  chips.innerHTML = state.results.map(r => `
+    <span class="result-chip" onclick="openQuestionnaire('${r.id}')">${r.abbr} <span class="chip-score" style="color:${r.color}">${r.formattedScore}</span></span>
+  `).join('');
+  card.style.display = 'block';
+}
+
+function copyResultsToClipboard() {
+  if (!state.results.length) return;
+  const patient = state.patient ? `\nPaciente: ${state.patient}` : '';
+  const lines = state.results.map(r => `  ${r.abbr} — ${r.name}: ${r.formattedScore}  (${r.interpretation})`);
+  const text = `RESULTADOS PhysiQ-Questionnaires${patient}\nFecha: ${_todayStr()}\n\n${lines.join('\n')}`;
+  navigator.clipboard.writeText(text).then(() => showCopyFeedback());
+}
+window.copyResultsToClipboard = copyResultsToClipboard;
+
+function showCopyFeedback() {
+  const existing = document.getElementById('copyFeedback');
+  if (existing) existing.remove();
+  const toast = document.createElement('div');
+  toast.id = 'copyFeedback';
+  toast.className = 'copy-feedback';
+  toast.textContent = '✓ Resultados copiados al portapapeles';
+  document.body.appendChild(toast);
+  setTimeout(() => toast.remove(), 3000);
 }
 
 function renderQuestionnaire(q) {

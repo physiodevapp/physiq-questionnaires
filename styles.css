@@ -9,6 +9,7 @@
   --text3:   #5a6e8a;
   --bg:      #0a0d12;
   --surface: #111620;
+  --surface2: #171e2e;
   --danger:  #ef4444;
 }
 
@@ -292,6 +293,68 @@ html, body {
   text-transform: uppercase;
   letter-spacing: 0.09em;
   color: var(--text3);
+}
+
+/* ── Global summary card ─────────────────────────────────────── */
+.summary-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.summary-header {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.summary-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1rem;
+  color: var(--accent);
+}
+.btn-copy {
+  background: none;
+  border: 1px solid var(--border2);
+  border-radius: 8px;
+  padding: 5px 10px;
+  font-size: 0.75rem;
+  color: var(--text2);
+  cursor: pointer;
+  font-family: 'DM Mono', monospace;
+  transition: border-color 0.2s, color 0.2s;
+}
+.btn-copy:hover { border-color: var(--accent); color: var(--accent); }
+.result-chips { display: flex; flex-wrap: wrap; gap: 6px; padding: 12px 16px; }
+.result-chip {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 5px 10px;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--text2);
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+}
+.result-chip:hover { border-color: var(--accent); color: #e8edf2; }
+.chip-score { font-weight: 500; }
+
+.copy-feedback {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--surface);
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  font-size: 0.8rem;
+  font-family: 'Outfit', sans-serif;
+  padding: 10px 20px;
+  border-radius: 8px;
+  z-index: 9999;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.4);
 }
 
 #q-grid {
