@@ -1,5 +1,14 @@
 'use strict';
 
+// Shared 0–4 response scale used by EFES (UEFI) and EFEI (LEFS)
+const FUNCTIONAL_SCALE_OPTIONS = [
+  'Extrema dificultad o incapaz de realizar la actividad',
+  'Bastante dificultad',
+  'Dificultad moderada',
+  'Un poco de dificultad',
+  'No dificultad',
+];
+
 const QUESTIONNAIRES = [
   {
     id: 'ndi',
@@ -462,83 +471,46 @@ const QUESTIONNAIRES = [
   },
 
   {
-    id: 'quickdash',
-    name: 'QuickDASH',
-    abbr: 'qDASH',
+    id: 'efes',
+    name: 'Escala Funcional de Extremidad Superior',
+    abbr: 'EFES',
     region: 'ES',
-    description: 'Discapacidad de brazo, hombro y mano',
-    itemCount: 11,
+    description: 'Función física de la extremidad superior (UEFI)',
+    itemCount: 20,
     type: 'radio',
-    note: 'En la última semana, ¿cuánta dificultad ha tenido para:',
+    note: 'Hoy, ¿le causa o le pudiera causar dificultad con:',
     items: [
-      {
-        id: 'jar',
-        label: '1. Abrir un tarro apretado o nuevo',
-        options: ['Sin dificultad', 'Dificultad leve', 'Dificultad moderada', 'Dificultad grave', 'Incapaz'],
-      },
-      {
-        id: 'write',
-        label: '2. Escribir',
-        options: ['Sin dificultad', 'Dificultad leve', 'Dificultad moderada', 'Dificultad grave', 'Incapaz'],
-      },
-      {
-        id: 'key',
-        label: '3. Girar una llave',
-        options: ['Sin dificultad', 'Dificultad leve', 'Dificultad moderada', 'Dificultad grave', 'Incapaz'],
-      },
-      {
-        id: 'meal',
-        label: '4. Preparar comidas',
-        options: ['Sin dificultad', 'Dificultad leve', 'Dificultad moderada', 'Dificultad grave', 'Incapaz'],
-      },
-      {
-        id: 'door',
-        label: '5. Empujar o abrir una puerta pesada',
-        options: ['Sin dificultad', 'Dificultad leve', 'Dificultad moderada', 'Dificultad grave', 'Incapaz'],
-      },
-      {
-        id: 'shelf',
-        label: '6. Colocar un objeto en una estantería sobre la cabeza',
-        options: ['Sin dificultad', 'Dificultad leve', 'Dificultad moderada', 'Dificultad grave', 'Incapaz'],
-      },
-      {
-        id: 'housework',
-        label: '7. Realizar tareas pesadas del hogar (fregar suelos, limpiar paredes…)',
-        options: ['Sin dificultad', 'Dificultad leve', 'Dificultad moderada', 'Dificultad grave', 'Incapaz'],
-      },
-      {
-        id: 'garden',
-        label: '8. Hacer jardinería o cuidar el jardín',
-        options: ['Sin dificultad', 'Dificultad leve', 'Dificultad moderada', 'Dificultad grave', 'Incapaz'],
-      },
-      {
-        id: 'bed',
-        label: '9. Hacer la cama',
-        options: ['Sin dificultad', 'Dificultad leve', 'Dificultad moderada', 'Dificultad grave', 'Incapaz'],
-      },
-      {
-        id: 'bag',
-        label: '10. Llevar una bolsa de la compra o un maletín',
-        options: ['Sin dificultad', 'Dificultad leve', 'Dificultad moderada', 'Dificultad grave', 'Incapaz'],
-      },
-      {
-        id: 'back',
-        label: '11. Lavar su espalda',
-        options: ['Sin dificultad', 'Dificultad leve', 'Dificultad moderada', 'Dificultad grave', 'Incapaz'],
-      },
+      { id: 'i1',  label: '1. Cualquier trabajo usual, trabajo doméstico, o actividades de la escuela', options: FUNCTIONAL_SCALE_OPTIONS },
+      { id: 'i2',  label: '2. Sus pasatiempos usuales, actividades recreativas o deportivas', options: FUNCTIONAL_SCALE_OPTIONS },
+      { id: 'i3',  label: '3. Levantar una bolsa de comestibles al nivel de la cintura', options: FUNCTIONAL_SCALE_OPTIONS },
+      { id: 'i4',  label: '4. Levantar una bolsa de comestibles por encima de la cabeza', options: FUNCTIONAL_SCALE_OPTIONS },
+      { id: 'i5',  label: '5. Arreglarse el pelo', options: FUNCTIONAL_SCALE_OPTIONS },
+      { id: 'i6',  label: '6. Poner presión en las manos como al levantarse de la bañera o silla', options: FUNCTIONAL_SCALE_OPTIONS },
+      { id: 'i7',  label: '7. Preparando comida como pelar o cortar', options: FUNCTIONAL_SCALE_OPTIONS },
+      { id: 'i8',  label: '8. Conducir', options: FUNCTIONAL_SCALE_OPTIONS },
+      { id: 'i9',  label: '9. Limpiar con la aspiradora, barrer, o rastrillar', options: FUNCTIONAL_SCALE_OPTIONS },
+      { id: 'i10', label: '10. Vestirse', options: FUNCTIONAL_SCALE_OPTIONS },
+      { id: 'i11', label: '11. Abrochándose los botones', options: FUNCTIONAL_SCALE_OPTIONS },
+      { id: 'i12', label: '12. Utilizando instrumentos o aparatos', options: FUNCTIONAL_SCALE_OPTIONS },
+      { id: 'i13', label: '13. Abrir puertas', options: FUNCTIONAL_SCALE_OPTIONS },
+      { id: 'i14', label: '14. Limpiar', options: FUNCTIONAL_SCALE_OPTIONS },
+      { id: 'i15', label: '15. Atar zapatos', options: FUNCTIONAL_SCALE_OPTIONS },
+      { id: 'i16', label: '16. Dormir', options: FUNCTIONAL_SCALE_OPTIONS },
+      { id: 'i17', label: '17. Lavando, planchando, doblando ropa', options: FUNCTIONAL_SCALE_OPTIONS },
+      { id: 'i18', label: '18. Abriendo un frasco', options: FUNCTIONAL_SCALE_OPTIONS },
+      { id: 'i19', label: '19. Tirar una pelota', options: FUNCTIONAL_SCALE_OPTIONS },
+      { id: 'i20', label: '20. Cargar una maleta pequeña con la extremidad afectada', options: FUNCTIONAL_SCALE_OPTIONS },
     ],
     score(answers) {
-      const values = answers.map(v => (v ?? 0) + 1); // shift to 1–5
-      const n = values.length;
-      return Math.round(((values.reduce((s, v) => s + v, 0) / n) - 1) * 25);
+      return answers.reduce((sum, v) => sum + (v ?? 0), 0);
     },
     interpret(score) {
-      if (score <= 25) return { label: 'Sin/mínima discapacidad',   color: '#38d9a9' };
-      if (score <= 50) return { label: 'Discapacidad leve–moderada', color: '#f59e0b' };
-      if (score <= 75) return { label: 'Discapacidad moderada–grave', color: '#fb923c' };
-                       return { label: 'Discapacidad grave',          color: '#ef4444' };
+      if (score <= 20) return { label: 'Función muy limitada',     color: '#ef4444' };
+      if (score <= 40) return { label: 'Función limitada',         color: '#fb923c' };
+      if (score <= 60) return { label: 'Función moderadamente limitada', color: '#f59e0b' };
+                       return { label: 'Función normal/casi normal', color: '#38d9a9' };
     },
-    formatScore(score) { return `${score}/100`; },
+    formatScore(score) { return `${score}/80`; },
   },
 
   {
@@ -549,28 +521,28 @@ const QUESTIONNAIRES = [
     description: 'Función física de la extremidad inferior (LEFS)',
     itemCount: 20,
     type: 'radio',
-    note: '¿Tiene actualmente, o tendría, alguna dificultad para realizar lo siguiente debido a su problema en la extremidad inferior?',
+    note: 'Hoy, ¿le causa o le pudiera causar dificultad con:',
     items: [
-      { id: 'i1',  label: '1. Cualquiera de sus tareas del hogar, trabajo o estudios habituales', options: ['Extrema dificultad o incapaz', 'Dificultad considerable', 'Dificultad moderada', 'Alguna dificultad', 'Ninguna dificultad'] },
-      { id: 'i2',  label: '2. Sus aficiones, actividades recreativas o deportivas habituales', options: ['Extrema dificultad o incapaz', 'Dificultad considerable', 'Dificultad moderada', 'Alguna dificultad', 'Ninguna dificultad'] },
-      { id: 'i3',  label: '3. Entrar o salir de la bañera', options: ['Extrema dificultad o incapaz', 'Dificultad considerable', 'Dificultad moderada', 'Alguna dificultad', 'Ninguna dificultad'] },
-      { id: 'i4',  label: '4. Caminar entre habitaciones', options: ['Extrema dificultad o incapaz', 'Dificultad considerable', 'Dificultad moderada', 'Alguna dificultad', 'Ninguna dificultad'] },
-      { id: 'i5',  label: '5. Ponerse los zapatos o los calcetines', options: ['Extrema dificultad o incapaz', 'Dificultad considerable', 'Dificultad moderada', 'Alguna dificultad', 'Ninguna dificultad'] },
-      { id: 'i6',  label: '6. Ponerse en cuclillas', options: ['Extrema dificultad o incapaz', 'Dificultad considerable', 'Dificultad moderada', 'Alguna dificultad', 'Ninguna dificultad'] },
-      { id: 'i7',  label: '7. Levantar un objeto, como una bolsa de la compra, del suelo', options: ['Extrema dificultad o incapaz', 'Dificultad considerable', 'Dificultad moderada', 'Alguna dificultad', 'Ninguna dificultad'] },
-      { id: 'i8',  label: '8. Realizar actividades ligeras en su casa', options: ['Extrema dificultad o incapaz', 'Dificultad considerable', 'Dificultad moderada', 'Alguna dificultad', 'Ninguna dificultad'] },
-      { id: 'i9',  label: '9. Realizar actividades pesadas en su casa', options: ['Extrema dificultad o incapaz', 'Dificultad considerable', 'Dificultad moderada', 'Alguna dificultad', 'Ninguna dificultad'] },
-      { id: 'i10', label: '10. Subirse o bajarse del coche', options: ['Extrema dificultad o incapaz', 'Dificultad considerable', 'Dificultad moderada', 'Alguna dificultad', 'Ninguna dificultad'] },
-      { id: 'i11', label: '11. Caminar dos manzanas (unas 2 cuadras)', options: ['Extrema dificultad o incapaz', 'Dificultad considerable', 'Dificultad moderada', 'Alguna dificultad', 'Ninguna dificultad'] },
-      { id: 'i12', label: '12. Caminar una milla (aprox. 1,6 km)', options: ['Extrema dificultad o incapaz', 'Dificultad considerable', 'Dificultad moderada', 'Alguna dificultad', 'Ninguna dificultad'] },
-      { id: 'i13', label: '13. Subir o bajar 10 escalones (un tramo de escaleras)', options: ['Extrema dificultad o incapaz', 'Dificultad considerable', 'Dificultad moderada', 'Alguna dificultad', 'Ninguna dificultad'] },
-      { id: 'i14', label: '14. Estar de pie durante una hora', options: ['Extrema dificultad o incapaz', 'Dificultad considerable', 'Dificultad moderada', 'Alguna dificultad', 'Ninguna dificultad'] },
-      { id: 'i15', label: '15. Estar sentado durante una hora', options: ['Extrema dificultad o incapaz', 'Dificultad considerable', 'Dificultad moderada', 'Alguna dificultad', 'Ninguna dificultad'] },
-      { id: 'i16', label: '16. Correr en terreno llano', options: ['Extrema dificultad o incapaz', 'Dificultad considerable', 'Dificultad moderada', 'Alguna dificultad', 'Ninguna dificultad'] },
-      { id: 'i17', label: '17. Correr en terreno irregular', options: ['Extrema dificultad o incapaz', 'Dificultad considerable', 'Dificultad moderada', 'Alguna dificultad', 'Ninguna dificultad'] },
-      { id: 'i18', label: '18. Girar bruscamente mientras corre rápido', options: ['Extrema dificultad o incapaz', 'Dificultad considerable', 'Dificultad moderada', 'Alguna dificultad', 'Ninguna dificultad'] },
-      { id: 'i19', label: '19. Dar saltos', options: ['Extrema dificultad o incapaz', 'Dificultad considerable', 'Dificultad moderada', 'Alguna dificultad', 'Ninguna dificultad'] },
-      { id: 'i20', label: '20. Darse la vuelta en la cama', options: ['Extrema dificultad o incapaz', 'Dificultad considerable', 'Dificultad moderada', 'Alguna dificultad', 'Ninguna dificultad'] },
+      { id: 'i1',  label: '1. Cualquier trabajo usual, trabajo doméstico, o actividades de la escuela', options: FUNCTIONAL_SCALE_OPTIONS },
+      { id: 'i2',  label: '2. Sus pasatiempos usuales, actividades recreativas o deportivas', options: FUNCTIONAL_SCALE_OPTIONS },
+      { id: 'i3',  label: '3. Entrar o salir del baño', options: FUNCTIONAL_SCALE_OPTIONS },
+      { id: 'i4',  label: '4. Andar entre cuartos', options: FUNCTIONAL_SCALE_OPTIONS },
+      { id: 'i5',  label: '5. Poniendo sus zapatos o los calcetines', options: FUNCTIONAL_SCALE_OPTIONS },
+      { id: 'i6',  label: '6. Ponerse en cuclillas', options: FUNCTIONAL_SCALE_OPTIONS },
+      { id: 'i7',  label: '7. Levantar un objeto, como una bolsa de comestibles del piso', options: FUNCTIONAL_SCALE_OPTIONS },
+      { id: 'i8',  label: '8. Realizar actividades ligeras domésticas', options: FUNCTIONAL_SCALE_OPTIONS },
+      { id: 'i9',  label: '9. Realizar actividades pesadas domésticas', options: FUNCTIONAL_SCALE_OPTIONS },
+      { id: 'i10', label: '10. Entrar o salir de un coche', options: FUNCTIONAL_SCALE_OPTIONS },
+      { id: 'i11', label: '11. Caminar 2 cuadras', options: FUNCTIONAL_SCALE_OPTIONS },
+      { id: 'i12', label: '12. Caminar una milla', options: FUNCTIONAL_SCALE_OPTIONS },
+      { id: 'i13', label: '13. Subir o bajar 10 escalones (cerca de 1 escalera completa)', options: FUNCTIONAL_SCALE_OPTIONS },
+      { id: 'i14', label: '14. Estar de pie por 1 hora', options: FUNCTIONAL_SCALE_OPTIONS },
+      { id: 'i15', label: '15. Estar sentado por 1 hora', options: FUNCTIONAL_SCALE_OPTIONS },
+      { id: 'i16', label: '16. Correr sobre suelo plano', options: FUNCTIONAL_SCALE_OPTIONS },
+      { id: 'i17', label: '17. Correr sobre suelo desigual', options: FUNCTIONAL_SCALE_OPTIONS },
+      { id: 'i18', label: '18. Hacer vueltas bruscas cuando corre rápidamente', options: FUNCTIONAL_SCALE_OPTIONS },
+      { id: 'i19', label: '19. Saltar', options: FUNCTIONAL_SCALE_OPTIONS },
+      { id: 'i20', label: '20. Darse la vuelta en la cama', options: FUNCTIONAL_SCALE_OPTIONS },
     ],
     score(answers) {
       return answers.reduce((sum, v) => sum + (v ?? 0), 0);
