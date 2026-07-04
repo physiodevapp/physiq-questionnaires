@@ -412,6 +412,10 @@ function renderGlobalSummary() {
   card.style.display = 'block';
 }
 
+function _maxScore(q) {
+  return (q.formatScore(0).match(/\/(\d+)/) || [])[1] ?? '';
+}
+
 function _buildCard(q) {
   const result = state.results.find(r => r.id === q.id);
   const card = document.createElement('button');
@@ -425,10 +429,14 @@ function _buildCard(q) {
       <span class="q-card-abbr">${q.abbr}</span>
     </div>
     ${result ? `
-      <span class="q-card-score" style="color:${result.color}">${result.formattedScore}</span>
+      <div class="q-card-score-row">
+        <span class="q-card-score" style="color:${result.color}">${result.formattedScore}</span>
+        <span role="button" class="btn-clear q-card-delete" title="Borrar resultado" aria-label="Borrar resultado">✕</span>
+      </div>
       <span class="q-card-interp" style="color:${result.color}">${result.interpretation}</span>
-      <span role="button" class="btn-clear q-card-delete" title="Borrar resultado" aria-label="Borrar resultado">✕</span>
-    ` : ''}
+    ` : `
+      <span class="q-card-score q-card-score--pending">-/${_maxScore(q)}</span>
+    `}
   `;
   card.querySelector('.q-card-info').onclick = e => {
     e.stopPropagation();
