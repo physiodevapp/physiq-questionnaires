@@ -392,7 +392,6 @@ function renderQuestionnaire(q) {
   container.innerHTML = `
     <div class="qv-header">
       <button class="btn-back" onclick="goHome()">← Volver</button>
-      <span class="qv-abbr">${q.abbr}</span>
       <span class="qv-name-badge">${q.name}</span>
     </div>
     ${q.note ? `<p class="qv-note">${q.note}</p>` : ''}
