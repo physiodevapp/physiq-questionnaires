@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PhysiQ Cuestionarios</title>
+  <title>PhysiQ Questionnaires</title>
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#f59e0b">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="PhysiQ Q">
+  <meta name="apple-mobile-web-app-title" content="PhysiQ Questionnaires">
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Outfit:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
@@ -21,13 +21,15 @@
   <header class="app-header">
     <div class="logo">
       <span class="logo-main">Physi<span class="logo-q">Q</span></span>
-      <span class="logo-sub">— <span class="logo-sub-word">Cuestionarios</span><span class="logo-sub-initial">C</span></span>
+      <span class="logo-sub">— <span class="logo-sub-word">Questionnaires</span><span class="logo-sub-initial">Q</span></span>
     </div>
-    <div class="header-patient">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-6 8-6s8 2 8 6"/>
-      </svg>
-      <span id="patient-name">—</span>
+    <div class="header-right">
+      <button class="btn-reset" id="headerResetBtn" onclick="promptSoftResetQuestionnaires()" style="display:none" aria-label="Borrar resultados" title="Borrar resultados">↺ <span class="btn-reset-text">Reiniciar</span></button>
+      <button id="sessionBtn" class="session-btn" onclick="toggleSessionPanel()" aria-label="Sesión" title="Sesión">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-6 8-6s8 2 8 6"/>
+        </svg>
+      </button>
     </div>
   </header>
 
@@ -44,6 +46,26 @@
   <div id="view-result" hidden></div>
 
 </div>
+
+<!-- ── Session panel (bottom sheet) ───────────────────────────── -->
+<div class="session-panel-overlay" id="sessionPanelOverlay" onclick="closeSessionPanel()">
+  <div class="session-panel" id="sessionPanel" onclick="event.stopPropagation()">
+    <div class="session-panel-handle"></div>
+    <div class="session-panel-title" id="sessionPanelTitle">Sin sesión activa</div>
+    <div class="field">
+      <label class="field-label" for="patientInput">Paciente</label>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <input class="field-input" type="text" id="patientInput" style="flex:1;" placeholder="Nombre (opcional)" autocomplete="off"
+          onkeydown="if(event.key==='Enter') closeSessionPanel()">
+        <button class="session-panel-clear" id="sessionPanelClear" onclick="promptClearSession()" title="Borrar sesión">
+          <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4h9M5 4V2h3v2M3.5 4l.5 7h5l.5-7"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="lib/session.js"></script>
 <script src="data.js"></script>
 <script src="app.js"></script>
 <script>
