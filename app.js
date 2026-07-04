@@ -398,7 +398,18 @@ function renderHome() {
   if (!visible.length) grid.innerHTML = '<div class="no-results-notice">Sin cuestionarios para este filtro</div>';
 
   _syncFilterChipsUI();
-  _updateCopyBtn();
+  renderGlobalSummary();
+}
+
+function renderGlobalSummary() {
+  const card  = document.getElementById('globalSummaryCard');
+  const chips = document.getElementById('globalSummaryChips');
+  if (!card) return;
+  if (!state.results.length) { card.style.display = 'none'; return; }
+  chips.innerHTML = state.results.map(r => `
+    <span class="result-chip" style="color:${r.color};border-color:${r.color}" onclick="openQuestionnaire('${r.id}')">${r.abbr}</span>
+  `).join('');
+  card.style.display = 'block';
 }
 
 function _buildCard(q) {
@@ -414,11 +425,9 @@ function _buildCard(q) {
       <span class="q-card-abbr">${q.abbr}</span>
     </div>
     ${result ? `
-      <div class="q-card-bottom">
-        <span class="q-card-score" style="color:${result.color}">${result.formattedScore}</span>
-        <span role="button" class="btn-clear" title="Borrar resultado" aria-label="Borrar resultado">✕</span>
-      </div>
+      <span class="q-card-score" style="color:${result.color}">${result.formattedScore}</span>
       <span class="q-card-interp" style="color:${result.color}">${result.interpretation}</span>
+      <span role="button" class="btn-clear q-card-delete" title="Borrar resultado" aria-label="Borrar resultado">✕</span>
     ` : ''}
   `;
   card.querySelector('.q-card-info').onclick = e => {
@@ -459,11 +468,6 @@ function showQuestionnaireInfo(id) {
 }
 window.showQuestionnaireInfo = showQuestionnaireInfo;
 
-function _updateCopyBtn() {
-  const btn = document.getElementById('copyResultsBtn');
-  if (btn) btn.style.display = state.results.length > 0 ? '' : 'none';
-}
-
 function copyResultsToClipboard() {
   if (!state.results.length) return;
   const patient = state.patient ? `\nPaciente: ${state.patient}` : '';
@@ -488,8 +492,8 @@ function renderQuestionnaire(q) {
   const container = document.getElementById('view-questionnaire');
   container.innerHTML = `
     <div class="qv-header">
-      <button class="btn-back" onclick="goHome()">← Volver</button>
-      <span class="qv-name-badge">${q.name}</span>
+      <button class="btn-back" onclick="goHome()">← Cuestionarios</button>
+      <span class="qv-name-badge">${q.abbr}</span>
     </div>
     ${q.note ? `<p class="qv-note">${q.note}</p>` : ''}
     <div class="qv-items" id="qv-items"></div>
@@ -619,7 +623,7 @@ function showResult(result, q) {
   const el = document.getElementById('view-result');
   el.innerHTML = `
     <div class="res-header">
-      <button class="btn-back" onclick="goHome()">← Volver</button>
+      <button class="btn-back" onclick="goHome()">← Cuestionarios</button>
       <span class="qv-abbr">${result.abbr}</span>
     </div>
     ${result.risk ? `
