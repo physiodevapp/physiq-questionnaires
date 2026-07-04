@@ -35,6 +35,13 @@
 
   <!-- ── Home view ──────────────────────────────────────────── -->
   <div id="view-home">
+    <div class="summary-card" id="globalSummaryCard" style="display:none">
+      <div class="summary-header">
+        <span class="summary-title">Resumen global</span>
+        <button class="btn-copy" onclick="copyResultsToClipboard()" title="Copiar resultados">📋 Copiar</button>
+      </div>
+      <div class="result-chips" id="globalSummaryChips"></div>
+    </div>
     <p class="home-title">Cuestionarios validados</p>
     <div id="q-grid"></div>
   </div>
