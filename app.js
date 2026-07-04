@@ -514,7 +514,7 @@ function submitQuestionnaire() {
   if (!q) return;
 
   const rawScore = q.score(state.answers);
-  const interp   = q.interpret(rawScore);
+  const interp   = q.interpret(rawScore, state.answers);
 
   const result = {
     id:             q.id,
@@ -527,6 +527,7 @@ function submitQuestionnaire() {
     formattedScore: q.formatScore(rawScore),
     interpretation: interp.label,
     color:          interp.color,
+    risk:           interp.risk || false,
   };
 
   const existing = state.results.findIndex(r => r.id === q.id);
@@ -550,6 +551,11 @@ function showResult(result, q) {
       <button class="btn-back" onclick="goHome()">← Volver</button>
       <span class="qv-abbr">${result.abbr}</span>
     </div>
+    ${result.risk ? `
+      <div class="risk-banner">
+        ⚠ Ha indicado pensamientos de autolesión o de estar mejor muerto/a. Se recomienda una valoración clínica inmediata (derivación a psicología/psiquiatría, o a urgencias si existe riesgo inminente).
+      </div>
+    ` : ''}
     <div class="res-card">
       <p class="res-label">Resultado</p>
       <p class="res-score" style="color:${result.color}">${result.formattedScore}</p>
@@ -563,12 +569,6 @@ function showResult(result, q) {
 }
 
 function _buildLegend(q) {
-  if (q.id === 'eva') return `
-    <div class="res-legend-row"><span style="color:#38d9a9">0–3</span><span>Dolor leve</span></div>
-    <div class="res-legend-row"><span style="color:#f59e0b">4–6</span><span>Dolor moderado</span></div>
-    <div class="res-legend-row"><span style="color:#fb923c">7–8</span><span>Dolor intenso</span></div>
-    <div class="res-legend-row"><span style="color:#ef4444">9–10</span><span>Dolor muy intenso</span></div>
-  `;
   if (q.id === 'ndi' || q.id === 'odi') {
     const labels = q.id === 'ndi'
       ? [['0–4%','Sin discapacidad'], ['5–14%','Leve'], ['15–24%','Moderada'], ['25–34%','Grave'], ['≥35%','Completa']]
@@ -578,17 +578,45 @@ function _buildLegend(q) {
       <div class="res-legend-row"><span style="color:${colors[i]}">${l[0]}</span><span>${l[1]}</span></div>
     `).join('');
   }
+  if (q.id === 'rmq') return `
+    <div class="res-legend-row"><span style="color:#38d9a9">0–4</span><span>Mínima</span></div>
+    <div class="res-legend-row"><span style="color:#38d9a9">5–9</span><span>Leve</span></div>
+    <div class="res-legend-row"><span style="color:#f59e0b">10–14</span><span>Moderada</span></div>
+    <div class="res-legend-row"><span style="color:#fb923c">15–19</span><span>Grave</span></div>
+    <div class="res-legend-row"><span style="color:#ef4444">20–24</span><span>Muy grave</span></div>
+  `;
+  if (q.id === 'tsk11') return `
+    <div class="res-legend-row"><span style="color:#38d9a9">11–26</span><span>Baja</span></div>
+    <div class="res-legend-row"><span style="color:#f59e0b">27–37</span><span>Moderada</span></div>
+    <div class="res-legend-row"><span style="color:#ef4444">38–44</span><span>Alta</span></div>
+  `;
+  if (q.id === 'phq2') return `
+    <div class="res-legend-row"><span style="color:#38d9a9">0–2</span><span>Cribado negativo</span></div>
+    <div class="res-legend-row"><span style="color:#ef4444">3–6</span><span>Cribado positivo</span></div>
+  `;
+  if (q.id === 'phq9') return `
+    <div class="res-legend-row"><span style="color:#38d9a9">0–4</span><span>Mínima o ninguna</span></div>
+    <div class="res-legend-row"><span style="color:#38d9a9">5–9</span><span>Leve</span></div>
+    <div class="res-legend-row"><span style="color:#f59e0b">10–14</span><span>Moderada</span></div>
+    <div class="res-legend-row"><span style="color:#fb923c">15–19</span><span>Moderadamente grave</span></div>
+    <div class="res-legend-row"><span style="color:#ef4444">20–27</span><span>Grave</span></div>
+  `;
+  if (q.id === 'pseq') return `
+    <div class="res-legend-row"><span style="color:#ef4444">0–20</span><span>Autoeficacia baja</span></div>
+    <div class="res-legend-row"><span style="color:#f59e0b">21–40</span><span>Autoeficacia moderada</span></div>
+    <div class="res-legend-row"><span style="color:#38d9a9">41–60</span><span>Autoeficacia alta</span></div>
+  `;
   if (q.id === 'quickdash') return `
     <div class="res-legend-row"><span style="color:#38d9a9">0–25</span><span>Sin/mínima discapacidad</span></div>
     <div class="res-legend-row"><span style="color:#f59e0b">26–50</span><span>Leve–moderada</span></div>
     <div class="res-legend-row"><span style="color:#fb923c">51–75</span><span>Moderada–grave</span></div>
     <div class="res-legend-row"><span style="color:#ef4444">76–100</span><span>Grave</span></div>
   `;
-  if (q.id === 'koos-ps') return `
-    <div class="res-legend-row"><span style="color:#38d9a9">75–100</span><span>Función casi normal</span></div>
-    <div class="res-legend-row"><span style="color:#f59e0b">50–74</span><span>Moderadamente limitada</span></div>
-    <div class="res-legend-row"><span style="color:#fb923c">25–49</span><span>Gravemente limitada</span></div>
-    <div class="res-legend-row"><span style="color:#ef4444">0–24</span><span>Muy gravemente limitada</span></div>
+  if (q.id === 'efei') return `
+    <div class="res-legend-row"><span style="color:#ef4444">0–20</span><span>Función muy limitada</span></div>
+    <div class="res-legend-row"><span style="color:#fb923c">21–40</span><span>Función limitada</span></div>
+    <div class="res-legend-row"><span style="color:#f59e0b">41–60</span><span>Moderadamente limitada</span></div>
+    <div class="res-legend-row"><span style="color:#38d9a9">61–80</span><span>Normal/casi normal</span></div>
   `;
   return '';
 }

@@ -2,36 +2,6 @@
 
 const QUESTIONNAIRES = [
   {
-    id: 'eva',
-    name: 'Escala Visual Analógica',
-    abbr: 'EVA',
-    region: 'General',
-    description: 'Intensidad del dolor (0–10)',
-    itemCount: 1,
-    type: 'slider',
-    items: [
-      {
-        id: 'pain',
-        label: '¿Cómo puntúas tu dolor actual?',
-        sublabel: '0 = sin dolor · 10 = peor dolor imaginable',
-        min: 0,
-        max: 10,
-      },
-    ],
-    score(answers) {
-      return answers[0] ?? 0;
-    },
-    interpret(score) {
-      if (score === 0)          return { label: 'Sin dolor',         color: '#38d9a9' };
-      if (score <= 3)           return { label: 'Dolor leve',        color: '#38d9a9' };
-      if (score <= 6)           return { label: 'Dolor moderado',    color: '#f59e0b' };
-      if (score <= 8)           return { label: 'Dolor intenso',     color: '#fb923c' };
-                                return { label: 'Dolor muy intenso', color: '#ef4444' };
-    },
-    formatScore(score) { return `${score}/10`; },
-  },
-
-  {
     id: 'ndi',
     name: 'Neck Disability Index',
     abbr: 'NDI',
@@ -320,10 +290,182 @@ const QUESTIONNAIRES = [
   },
 
   {
+    id: 'rmq',
+    name: 'Cuestionario de Discapacidad de Roland-Morris',
+    abbr: 'RMQ',
+    region: 'Lumbar',
+    description: 'Discapacidad funcional por dolor lumbar',
+    itemCount: 24,
+    type: 'radio',
+    note: 'Marque «Sí» únicamente en las frases que describan cómo se ha encontrado esta semana debido a su dolor de espalda.',
+    items: [
+      { id: 'i1',  label: '1. Me quedo en casa la mayor parte del tiempo por mi dolor de espalda', options: ['No', 'Sí'] },
+      { id: 'i2',  label: '2. Cambio de postura con frecuencia para intentar aliviar la espalda', options: ['No', 'Sí'] },
+      { id: 'i3',  label: '3. Debido a mi espalda, camino más lentamente de lo normal', options: ['No', 'Sí'] },
+      { id: 'i4',  label: '4. Debido a mi espalda, no hago ninguna de las tareas que habitualmente hago en casa', options: ['No', 'Sí'] },
+      { id: 'i5',  label: '5. Debido a mi espalda, utilizo el pasamanos para subir escaleras', options: ['No', 'Sí'] },
+      { id: 'i6',  label: '6. Debido a mi espalda, me tumbo a descansar más a menudo', options: ['No', 'Sí'] },
+      { id: 'i7',  label: '7. Debido a mi espalda, tengo que apoyarme en algo para levantarme de un sillón', options: ['No', 'Sí'] },
+      { id: 'i8',  label: '8. Debido a mi espalda, intento que otras personas hagan las cosas por mí', options: ['No', 'Sí'] },
+      { id: 'i9',  label: '9. Me visto más despacio de lo normal debido a mi espalda', options: ['No', 'Sí'] },
+      { id: 'i10', label: '10. Debido a la espalda, estoy de pie sólo durante breves períodos de tiempo', options: ['No', 'Sí'] },
+      { id: 'i11', label: '11. Debido a la espalda, intento no inclinarme o arrodillarme', options: ['No', 'Sí'] },
+      { id: 'i12', label: '12. Debido a la espalda, me cuesta levantarme de la silla', options: ['No', 'Sí'] },
+      { id: 'i13', label: '13. Me duele la espalda la mayor parte del tiempo', options: ['No', 'Sí'] },
+      { id: 'i14', label: '14. Debido a la espalda, me cuesta darme la vuelta en la cama', options: ['No', 'Sí'] },
+      { id: 'i15', label: '15. No tengo muy buen apetito debido al dolor de espalda', options: ['No', 'Sí'] },
+      { id: 'i16', label: '16. Me cuesta ponerme los calcetines (o las medias), debido al dolor de espalda', options: ['No', 'Sí'] },
+      { id: 'i17', label: '17. Debido al dolor de espalda, solo camino distancias cortas', options: ['No', 'Sí'] },
+      { id: 'i18', label: '18. Duermo peor debido a mi espalda', options: ['No', 'Sí'] },
+      { id: 'i19', label: '19. Debido al dolor de espalda, necesito ayuda de otra persona para vestirme', options: ['No', 'Sí'] },
+      { id: 'i20', label: '20. Debido a la espalda, me paso la mayor parte del día sentado/a', options: ['No', 'Sí'] },
+      { id: 'i21', label: '21. Debido a la espalda, evito las tareas pesadas en casa', options: ['No', 'Sí'] },
+      { id: 'i22', label: '22. Debido al dolor de espalda, estoy más irritable y de peor humor con los demás que de costumbre', options: ['No', 'Sí'] },
+      { id: 'i23', label: '23. Debido a mi espalda, subo las escaleras más despacio de lo normal', options: ['No', 'Sí'] },
+      { id: 'i24', label: '24. Me quedo casi constantemente en la cama por mi espalda', options: ['No', 'Sí'] },
+    ],
+    score(answers) {
+      return answers.reduce((sum, v) => sum + (v ?? 0), 0);
+    },
+    interpret(score) {
+      if (score <= 4)  return { label: 'Discapacidad mínima',  color: '#38d9a9' };
+      if (score <= 9)  return { label: 'Discapacidad leve',    color: '#38d9a9' };
+      if (score <= 14) return { label: 'Discapacidad moderada', color: '#f59e0b' };
+      if (score <= 19) return { label: 'Discapacidad grave',   color: '#fb923c' };
+                       return { label: 'Discapacidad muy grave', color: '#ef4444' };
+    },
+    formatScore(score) { return `${score}/24`; },
+  },
+
+  {
+    id: 'tsk11',
+    name: 'Escala de Tampa para la Kinesiofobia',
+    abbr: 'TSK-11',
+    region: 'Psicológico',
+    description: 'Miedo al movimiento y a la (re)lesión',
+    itemCount: 11,
+    type: 'radio',
+    note: 'Indique su grado de acuerdo con cada afirmación.',
+    items: [
+      { id: 'i1',  label: '1. Tengo miedo de lesionarme si hago ejercicio físico', options: ['Totalmente en desacuerdo', 'Algo en desacuerdo', 'Algo de acuerdo', 'Totalmente de acuerdo'] },
+      { id: 'i2',  label: '2. Si me dejara vencer por el dolor, el dolor aumentaría', options: ['Totalmente en desacuerdo', 'Algo en desacuerdo', 'Algo de acuerdo', 'Totalmente de acuerdo'] },
+      { id: 'i3',  label: '3. Mi cuerpo me está diciendo que tengo algo serio', options: ['Totalmente en desacuerdo', 'Algo en desacuerdo', 'Algo de acuerdo', 'Totalmente de acuerdo'] },
+      { id: 'i4',  label: '4. Tener dolor siempre quiere decir que en el cuerpo hay una lesión', options: ['Totalmente en desacuerdo', 'Algo en desacuerdo', 'Algo de acuerdo', 'Totalmente de acuerdo'] },
+      { id: 'i5',  label: '5. Tengo miedo a lesionarme sin querer', options: ['Totalmente en desacuerdo', 'Algo en desacuerdo', 'Algo de acuerdo', 'Totalmente de acuerdo'] },
+      { id: 'i6',  label: '6. Lo más seguro para evitar que aumente el dolor es tener cuidado y no hacer movimientos innecesarios', options: ['Totalmente en desacuerdo', 'Algo en desacuerdo', 'Algo de acuerdo', 'Totalmente de acuerdo'] },
+      { id: 'i7',  label: '7. No me dolería tanto si no tuviese algo serio en mi cuerpo', options: ['Totalmente en desacuerdo', 'Algo en desacuerdo', 'Algo de acuerdo', 'Totalmente de acuerdo'] },
+      { id: 'i8',  label: '8. El dolor me dice cuándo debo parar la actividad para no lesionarme', options: ['Totalmente en desacuerdo', 'Algo en desacuerdo', 'Algo de acuerdo', 'Totalmente de acuerdo'] },
+      { id: 'i9',  label: '9. No es seguro para una persona con mi enfermedad hacer actividades físicas', options: ['Totalmente en desacuerdo', 'Algo en desacuerdo', 'Algo de acuerdo', 'Totalmente de acuerdo'] },
+      { id: 'i10', label: '10. No puedo hacer todo lo que la gente normal hace porque me podría lesionar con facilidad', options: ['Totalmente en desacuerdo', 'Algo en desacuerdo', 'Algo de acuerdo', 'Totalmente de acuerdo'] },
+      { id: 'i11', label: '11. Nadie debería hacer actividades físicas cuando tiene dolor', options: ['Totalmente en desacuerdo', 'Algo en desacuerdo', 'Algo de acuerdo', 'Totalmente de acuerdo'] },
+    ],
+    score(answers) {
+      return answers.reduce((sum, v) => sum + (v ?? 0) + 1, 0);
+    },
+    interpret(score) {
+      if (score < 27) return { label: 'Kinesiofobia baja (orientativo)',     color: '#38d9a9' };
+      if (score <= 37) return { label: 'Kinesiofobia moderada (orientativo)', color: '#f59e0b' };
+                       return { label: 'Kinesiofobia alta (orientativo)',     color: '#ef4444' };
+    },
+    formatScore(score) { return `${score}/44`; },
+  },
+
+  {
+    id: 'phq2',
+    name: 'Patient Health Questionnaire-2',
+    abbr: 'PHQ-2',
+    region: 'Psicológico',
+    description: 'Cribado rápido de síntomas depresivos',
+    itemCount: 2,
+    type: 'radio',
+    note: 'Durante las últimas 2 semanas, ¿con qué frecuencia le han molestado los siguientes problemas?',
+    items: [
+      { id: 'interest', label: '1. Poco interés o placer en hacer cosas', options: ['Nunca', 'Varios días', 'Más de la mitad de los días', 'Casi todos los días'] },
+      { id: 'down',     label: '2. Se ha sentido decaído/a, deprimido/a o sin esperanza', options: ['Nunca', 'Varios días', 'Más de la mitad de los días', 'Casi todos los días'] },
+    ],
+    score(answers) {
+      return answers.reduce((sum, v) => sum + (v ?? 0), 0);
+    },
+    interpret(score) {
+      if (score >= 3) return { label: 'Cribado positivo — valorar PHQ-9', color: '#ef4444' };
+      return { label: 'Cribado negativo', color: '#38d9a9' };
+    },
+    formatScore(score) { return `${score}/6`; },
+  },
+
+  {
+    id: 'phq9',
+    name: 'Patient Health Questionnaire-9',
+    abbr: 'PHQ-9',
+    region: 'Psicológico',
+    description: 'Gravedad de los síntomas depresivos',
+    itemCount: 9,
+    type: 'radio',
+    note: 'Durante las últimas 2 semanas, ¿con qué frecuencia le han molestado los siguientes problemas?',
+    items: [
+      { id: 'interest',      label: '1. Poco interés o placer en hacer cosas', options: ['Nunca', 'Varios días', 'Más de la mitad de los días', 'Casi todos los días'] },
+      { id: 'down',          label: '2. Se ha sentido decaído(a), deprimido(a) o sin esperanzas', options: ['Nunca', 'Varios días', 'Más de la mitad de los días', 'Casi todos los días'] },
+      { id: 'sleep',         label: '3. Problemas para dormir, ya sea en dormir demasiado o en no poder conciliar el sueño, o en despertarse demasiado temprano', options: ['Nunca', 'Varios días', 'Más de la mitad de los días', 'Casi todos los días'] },
+      { id: 'tired',         label: '4. Se ha sentido cansado(a) o con poca energía', options: ['Nunca', 'Varios días', 'Más de la mitad de los días', 'Casi todos los días'] },
+      { id: 'appetite',      label: '5. Poco apetito o comer en exceso', options: ['Nunca', 'Varios días', 'Más de la mitad de los días', 'Casi todos los días'] },
+      { id: 'failure',       label: '6. Se ha sentido mal con usted mismo(a), o que es un fracaso, o que ha quedado mal con usted mismo(a) o con su familia', options: ['Nunca', 'Varios días', 'Más de la mitad de los días', 'Casi todos los días'] },
+      { id: 'concentration', label: '7. Dificultad para concentrarse en cosas tales como leer el periódico o ver la televisión', options: ['Nunca', 'Varios días', 'Más de la mitad de los días', 'Casi todos los días'] },
+      { id: 'psychomotor',   label: '8. Se ha movido o hablado tan despacio que otras personas podrían haberlo notado, o lo contrario: muy inquieto(a) o agitado(a), moviéndose mucho más de lo normal', options: ['Nunca', 'Varios días', 'Más de la mitad de los días', 'Casi todos los días'] },
+      { id: 'self_harm',     label: '9. Pensamientos de que estaría mejor muerto(a) o de hacerse daño de alguna manera', options: ['Nunca', 'Varios días', 'Más de la mitad de los días', 'Casi todos los días'] },
+    ],
+    score(answers) {
+      return answers.reduce((sum, v) => sum + (v ?? 0), 0);
+    },
+    interpret(score, answers) {
+      let result;
+      if (score <= 4)       result = { label: 'Mínima o ninguna', color: '#38d9a9' };
+      else if (score <= 9)  result = { label: 'Depresión leve',   color: '#38d9a9' };
+      else if (score <= 14) result = { label: 'Depresión moderada', color: '#f59e0b' };
+      else if (score <= 19) result = { label: 'Depresión moderadamente grave', color: '#fb923c' };
+      else                  result = { label: 'Depresión grave', color: '#ef4444' };
+      if (Array.isArray(answers) && (answers[8] ?? 0) > 0) result.risk = true;
+      return result;
+    },
+    formatScore(score) { return `${score}/27`; },
+  },
+
+  {
+    id: 'pseq',
+    name: 'Pain Self-Efficacy Questionnaire',
+    abbr: 'PSEQ',
+    region: 'Psicológico',
+    description: 'Autoeficacia frente al dolor crónico',
+    itemCount: 10,
+    type: 'radio',
+    note: 'Indique el grado de confianza que tiene actualmente para realizar lo siguiente a pesar del dolor (0 = Nada seguro, 6 = Totalmente seguro).',
+    items: [
+      { id: 'i1',  label: '1. Puedo disfrutar de las cosas, a pesar del dolor', options: ['Nada seguro en absoluto', '', '', '', '', '', 'Totalmente seguro'] },
+      { id: 'i2',  label: '2. Puedo hacer la mayoría de las tareas del hogar (por ejemplo, ordenar, fregar los platos, etc.), a pesar del dolor', options: ['Nada seguro en absoluto', '', '', '', '', '', 'Totalmente seguro'] },
+      { id: 'i3',  label: '3. Puedo relacionarme socialmente con mis amigos o familiares tan a menudo como antes, a pesar del dolor', options: ['Nada seguro en absoluto', '', '', '', '', '', 'Totalmente seguro'] },
+      { id: 'i4',  label: '4. Puedo afrontar mi dolor en la mayoría de las situaciones', options: ['Nada seguro en absoluto', '', '', '', '', '', 'Totalmente seguro'] },
+      { id: 'i5',  label: '5. Puedo realizar algún tipo de trabajo, a pesar del dolor (incluye tareas del hogar, trabajo remunerado y no remunerado)', options: ['Nada seguro en absoluto', '', '', '', '', '', 'Totalmente seguro'] },
+      { id: 'i6',  label: '6. Todavía puedo hacer muchas de las cosas que disfruto, como aficiones o actividades de ocio, a pesar del dolor', options: ['Nada seguro en absoluto', '', '', '', '', '', 'Totalmente seguro'] },
+      { id: 'i7',  label: '7. Puedo afrontar mi dolor sin necesidad de medicación', options: ['Nada seguro en absoluto', '', '', '', '', '', 'Totalmente seguro'] },
+      { id: 'i8',  label: '8. Todavía puedo cumplir la mayoría de mis metas en la vida, a pesar del dolor', options: ['Nada seguro en absoluto', '', '', '', '', '', 'Totalmente seguro'] },
+      { id: 'i9',  label: '9. Puedo llevar una vida normal, a pesar del dolor', options: ['Nada seguro en absoluto', '', '', '', '', '', 'Totalmente seguro'] },
+      { id: 'i10', label: '10. Puedo volverme gradualmente más activo/a, a pesar del dolor', options: ['Nada seguro en absoluto', '', '', '', '', '', 'Totalmente seguro'] },
+    ],
+    score(answers) {
+      return answers.reduce((sum, v) => sum + (v ?? 0), 0);
+    },
+    interpret(score) {
+      if (score <= 20) return { label: 'Autoeficacia baja',      color: '#ef4444' };
+      if (score <= 40) return { label: 'Autoeficacia moderada',  color: '#f59e0b' };
+                       return { label: 'Autoeficacia alta',      color: '#38d9a9' };
+    },
+    formatScore(score) { return `${score}/60`; },
+  },
+
+  {
     id: 'quickdash',
     name: 'QuickDASH',
     abbr: 'qDASH',
-    region: 'Miembro superior',
+    region: 'ES',
     description: 'Discapacidad de brazo, hombro y mano',
     itemCount: 11,
     type: 'radio',
@@ -400,61 +542,45 @@ const QUESTIONNAIRES = [
   },
 
   {
-    id: 'koos-ps',
-    name: 'KOOS Physical Function Short Form',
-    abbr: 'KOOS-PS',
-    region: 'Rodilla',
-    description: 'Función física de rodilla (forma abreviada)',
-    itemCount: 7,
+    id: 'efei',
+    name: 'Escala Funcional de Extremidad Inferior',
+    abbr: 'EFEI',
+    region: 'EI',
+    description: 'Función física de la extremidad inferior (LEFS)',
+    itemCount: 20,
     type: 'radio',
-    note: '¿Qué grado de dificultad / molestia ha tenido en la última semana?',
+    note: '¿Tiene actualmente, o tendría, alguna dificultad para realizar lo siguiente debido a su problema en la extremidad inferior?',
     items: [
-      {
-        id: 'squat',
-        label: '1. Ponerse en cuclillas',
-        options: ['Ninguno', 'Leve', 'Moderado', 'Grave', 'Extremo'],
-      },
-      {
-        id: 'run',
-        label: '2. Correr',
-        options: ['Ninguno', 'Leve', 'Moderado', 'Grave', 'Extremo'],
-      },
-      {
-        id: 'uneven',
-        label: '3. Andar por terreno irregular',
-        options: ['Ninguno', 'Leve', 'Moderado', 'Grave', 'Extremo'],
-      },
-      {
-        id: 'stairs',
-        label: '4. Subir y bajar escaleras',
-        options: ['Ninguno', 'Leve', 'Moderado', 'Grave', 'Extremo'],
-      },
-      {
-        id: 'sleep',
-        label: '5. Dificultad para dormir a causa del dolor de rodilla',
-        options: ['Ninguno', 'Leve', 'Moderado', 'Grave', 'Extremo'],
-      },
-      {
-        id: 'socks',
-        label: '6. Ponerse calcetines o medias',
-        options: ['Ninguno', 'Leve', 'Moderado', 'Grave', 'Extremo'],
-      },
-      {
-        id: 'sitting',
-        label: '7. Estar sentado',
-        options: ['Ninguno', 'Leve', 'Moderado', 'Grave', 'Extremo'],
-      },
+      { id: 'i1',  label: '1. Cualquiera de sus tareas del hogar, trabajo o estudios habituales', options: ['Extrema dificultad o incapaz', 'Dificultad considerable', 'Dificultad moderada', 'Alguna dificultad', 'Ninguna dificultad'] },
+      { id: 'i2',  label: '2. Sus aficiones, actividades recreativas o deportivas habituales', options: ['Extrema dificultad o incapaz', 'Dificultad considerable', 'Dificultad moderada', 'Alguna dificultad', 'Ninguna dificultad'] },
+      { id: 'i3',  label: '3. Entrar o salir de la bañera', options: ['Extrema dificultad o incapaz', 'Dificultad considerable', 'Dificultad moderada', 'Alguna dificultad', 'Ninguna dificultad'] },
+      { id: 'i4',  label: '4. Caminar entre habitaciones', options: ['Extrema dificultad o incapaz', 'Dificultad considerable', 'Dificultad moderada', 'Alguna dificultad', 'Ninguna dificultad'] },
+      { id: 'i5',  label: '5. Ponerse los zapatos o los calcetines', options: ['Extrema dificultad o incapaz', 'Dificultad considerable', 'Dificultad moderada', 'Alguna dificultad', 'Ninguna dificultad'] },
+      { id: 'i6',  label: '6. Ponerse en cuclillas', options: ['Extrema dificultad o incapaz', 'Dificultad considerable', 'Dificultad moderada', 'Alguna dificultad', 'Ninguna dificultad'] },
+      { id: 'i7',  label: '7. Levantar un objeto, como una bolsa de la compra, del suelo', options: ['Extrema dificultad o incapaz', 'Dificultad considerable', 'Dificultad moderada', 'Alguna dificultad', 'Ninguna dificultad'] },
+      { id: 'i8',  label: '8. Realizar actividades ligeras en su casa', options: ['Extrema dificultad o incapaz', 'Dificultad considerable', 'Dificultad moderada', 'Alguna dificultad', 'Ninguna dificultad'] },
+      { id: 'i9',  label: '9. Realizar actividades pesadas en su casa', options: ['Extrema dificultad o incapaz', 'Dificultad considerable', 'Dificultad moderada', 'Alguna dificultad', 'Ninguna dificultad'] },
+      { id: 'i10', label: '10. Subirse o bajarse del coche', options: ['Extrema dificultad o incapaz', 'Dificultad considerable', 'Dificultad moderada', 'Alguna dificultad', 'Ninguna dificultad'] },
+      { id: 'i11', label: '11. Caminar dos manzanas (unas 2 cuadras)', options: ['Extrema dificultad o incapaz', 'Dificultad considerable', 'Dificultad moderada', 'Alguna dificultad', 'Ninguna dificultad'] },
+      { id: 'i12', label: '12. Caminar una milla (aprox. 1,6 km)', options: ['Extrema dificultad o incapaz', 'Dificultad considerable', 'Dificultad moderada', 'Alguna dificultad', 'Ninguna dificultad'] },
+      { id: 'i13', label: '13. Subir o bajar 10 escalones (un tramo de escaleras)', options: ['Extrema dificultad o incapaz', 'Dificultad considerable', 'Dificultad moderada', 'Alguna dificultad', 'Ninguna dificultad'] },
+      { id: 'i14', label: '14. Estar de pie durante una hora', options: ['Extrema dificultad o incapaz', 'Dificultad considerable', 'Dificultad moderada', 'Alguna dificultad', 'Ninguna dificultad'] },
+      { id: 'i15', label: '15. Estar sentado durante una hora', options: ['Extrema dificultad o incapaz', 'Dificultad considerable', 'Dificultad moderada', 'Alguna dificultad', 'Ninguna dificultad'] },
+      { id: 'i16', label: '16. Correr en terreno llano', options: ['Extrema dificultad o incapaz', 'Dificultad considerable', 'Dificultad moderada', 'Alguna dificultad', 'Ninguna dificultad'] },
+      { id: 'i17', label: '17. Correr en terreno irregular', options: ['Extrema dificultad o incapaz', 'Dificultad considerable', 'Dificultad moderada', 'Alguna dificultad', 'Ninguna dificultad'] },
+      { id: 'i18', label: '18. Girar bruscamente mientras corre rápido', options: ['Extrema dificultad o incapaz', 'Dificultad considerable', 'Dificultad moderada', 'Alguna dificultad', 'Ninguna dificultad'] },
+      { id: 'i19', label: '19. Dar saltos', options: ['Extrema dificultad o incapaz', 'Dificultad considerable', 'Dificultad moderada', 'Alguna dificultad', 'Ninguna dificultad'] },
+      { id: 'i20', label: '20. Darse la vuelta en la cama', options: ['Extrema dificultad o incapaz', 'Dificultad considerable', 'Dificultad moderada', 'Alguna dificultad', 'Ninguna dificultad'] },
     ],
     score(answers) {
-      const mean = answers.reduce((s, v) => s + (v ?? 0), 0) / answers.length;
-      return Math.round(100 - mean * 25);
+      return answers.reduce((sum, v) => sum + (v ?? 0), 0);
     },
     interpret(score) {
-      if (score >= 75) return { label: 'Función casi normal',          color: '#38d9a9' };
-      if (score >= 50) return { label: 'Función moderadamente limitada', color: '#f59e0b' };
-      if (score >= 25) return { label: 'Función gravemente limitada',   color: '#fb923c' };
-                       return { label: 'Función muy gravemente limitada', color: '#ef4444' };
+      if (score <= 20) return { label: 'Función muy limitada',     color: '#ef4444' };
+      if (score <= 40) return { label: 'Función limitada',         color: '#fb923c' };
+      if (score <= 60) return { label: 'Función moderadamente limitada', color: '#f59e0b' };
+                       return { label: 'Función normal/casi normal', color: '#38d9a9' };
     },
-    formatScore(score) { return `${score}/100`; },
+    formatScore(score) { return `${score}/80`; },
   },
 ];
