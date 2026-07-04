@@ -368,7 +368,6 @@ function renderHome() {
         <span class="q-card-region">${q.region}</span>
       </div>
       <span class="q-card-name">${q.name}</span>
-      <span class="q-card-desc">${q.description}</span>
       ${result ? `
         <div class="q-card-bottom">
           <span class="q-card-score" style="color:${result.color}">${result.formattedScore}</span>
@@ -386,18 +385,12 @@ function renderHome() {
     grid.appendChild(card);
   });
 
-  renderGlobalSummary();
+  _updateCopyBtn();
 }
 
-function renderGlobalSummary() {
-  const card  = document.getElementById('globalSummaryCard');
-  const chips = document.getElementById('globalSummaryChips');
-  if (!card) return;
-  if (!state.results.length) { card.style.display = 'none'; return; }
-  chips.innerHTML = state.results.map(r => `
-    <span class="result-chip" onclick="openQuestionnaire('${r.id}')">${r.abbr} <span class="chip-score" style="color:${r.color}">${r.formattedScore}</span></span>
-  `).join('');
-  card.style.display = 'block';
+function _updateCopyBtn() {
+  const btn = document.getElementById('copyResultsBtn');
+  if (btn) btn.style.display = state.results.length > 0 ? '' : 'none';
 }
 
 function copyResultsToClipboard() {

@@ -35,14 +35,10 @@
 
   <!-- ── Home view ──────────────────────────────────────────── -->
   <div id="view-home">
-    <div class="summary-card" id="globalSummaryCard" style="display:none">
-      <div class="summary-header">
-        <span class="summary-title">Resumen global</span>
-        <button class="btn-copy" onclick="copyResultsToClipboard()" title="Copiar resultados">📋 Copiar</button>
-      </div>
-      <div class="result-chips" id="globalSummaryChips"></div>
+    <div class="home-title-row">
+      <p class="home-title">Cuestionarios validados</p>
+      <button class="btn-copy" id="copyResultsBtn" onclick="copyResultsToClipboard()" title="Copiar resultados" style="display:none">📋 Copiar</button>
     </div>
-    <p class="home-title">Cuestionarios validados</p>
     <div id="q-grid"></div>
   </div>
 
