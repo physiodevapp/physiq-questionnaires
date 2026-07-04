@@ -51,7 +51,7 @@ html, body {
   letter-spacing: -0.02em;
 }
 .logo-q {
-  background: linear-gradient(135deg, var(--accent), #fb923c);
+  background: linear-gradient(135deg, #4f9cf9, #38d9a9);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -444,7 +444,8 @@ html, body {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 45%;
+  max-width: 65%;
+  margin-left: auto;
   flex-shrink: 0;
 }
 
