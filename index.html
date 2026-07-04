@@ -39,6 +39,12 @@
       <p class="home-title">Cuestionarios validados</p>
       <button class="btn-copy" id="copyResultsBtn" onclick="copyResultsToClipboard()" title="Copiar resultados" style="display:none">📋 Copiar</button>
     </div>
+    <div class="cat-filter-bar" id="catFilterBar">
+      <button class="cat-filter-chip" data-group="columna" onclick="setCategoryFilter('columna')">Columna</button>
+      <button class="cat-filter-chip" data-group="es" onclick="setCategoryFilter('es')">Extremidad superior</button>
+      <button class="cat-filter-chip" data-group="ei" onclick="setCategoryFilter('ei')">Extremidad inferior</button>
+      <button class="cat-filter-chip" data-group="transversal" onclick="setCategoryFilter('transversal')">Transversales</button>
+    </div>
     <div id="q-grid"></div>
   </div>
 
