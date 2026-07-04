@@ -9,7 +9,6 @@
   --text3:   #5a6e8a;
   --bg:      #0a0d12;
   --surface: #111620;
-  --surface2: #171e2e;
   --danger:  #ef4444;
 }
 
@@ -287,6 +286,13 @@ html, body {
   flex: 1;
 }
 
+.home-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
 .home-title {
   font-family: 'DM Mono', monospace;
   font-size: 0.7rem;
@@ -295,25 +301,6 @@ html, body {
   color: var(--text3);
 }
 
-/* ── Global summary card ─────────────────────────────────────── */
-.summary-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  overflow: hidden;
-}
-.summary-header {
-  padding: 14px 16px;
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.summary-title {
-  font-family: 'DM Serif Display', serif;
-  font-size: 1rem;
-  color: var(--accent);
-}
 .btn-copy {
   background: none;
   border: 1px solid var(--border2);
@@ -324,22 +311,9 @@ html, body {
   cursor: pointer;
   font-family: 'DM Mono', monospace;
   transition: border-color 0.2s, color 0.2s;
+  flex-shrink: 0;
 }
 .btn-copy:hover { border-color: var(--accent); color: var(--accent); }
-.result-chips { display: flex; flex-wrap: wrap; gap: 6px; padding: 12px 16px; }
-.result-chip {
-  background: var(--surface2);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  padding: 5px 10px;
-  font-family: 'DM Mono', monospace;
-  font-size: 11px;
-  color: var(--text2);
-  cursor: pointer;
-  transition: border-color 0.2s, color 0.2s;
-}
-.result-chip:hover { border-color: var(--accent); color: #e8edf2; }
-.chip-score { font-weight: 500; }
 
 .copy-feedback {
   position: fixed;
