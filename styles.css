@@ -332,6 +332,60 @@ html, body {
 }
 
 #q-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.no-results-notice {
+  font-size: 0.8rem;
+  color: var(--text3);
+  font-style: italic;
+  padding: 8px 2px;
+}
+
+/* ── Category filter bar (mirrors physiq-wiki's Tests Especiales filters) ── */
+.cat-filter-bar {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding-bottom: 2px;
+}
+.cat-filter-bar::-webkit-scrollbar { display: none; }
+.cat-filter-chip {
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--text2);
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: all 0.15s;
+  font-family: 'Outfit', sans-serif;
+}
+.cat-filter-chip.on {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #0a0d12;
+}
+
+/* ── Category section (mirrors physiq-wiki's category-section/category-title) ── */
+.category-section { display: flex; flex-direction: column; gap: 10px; }
+.category-title {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text3);
+  padding: 4px 0 8px;
+  border-bottom: 1px solid var(--border);
+}
+.category-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 10px;
@@ -365,29 +419,35 @@ html, body {
 .q-card:hover  { border-color: var(--border2); }
 .q-card:active { transform: scale(0.97); }
 
+.q-card-info {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text3);
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+  flex-shrink: 0;
+}
+.q-card-info:hover { border-color: var(--accent); color: var(--accent); }
+
 .q-card-top {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  padding-right: 24px;
 }
 .q-card-abbr {
   font-family: 'DM Serif Display', serif;
   font-size: 1.15rem;
   font-weight: 400;
   color: var(--accent);
-}
-.q-card-region {
-  font-family: 'DM Mono', monospace;
-  font-size: 0.62rem;
-  color: var(--text3);
-  text-transform: uppercase;
-  letter-spacing: 0.07em;
-}
-.q-card-name {
-  font-size: 0.78rem;
-  font-weight: 500;
-  color: #c8d8e8;
-  line-height: 1.3;
 }
 .q-card-bottom {
   display: flex;

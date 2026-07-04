@@ -353,40 +353,111 @@ function confirmDeleteResult(id) {
 window.confirmDeleteResult = confirmDeleteResult;
 
 // ── Renders ───────────────────────────────────────────────────────────────────
+// ── Category grouping + filters (mirrors physiq-wiki's Tests Especiales layout) ────────────────
+const CATEGORY_ORDER = ['Cervical', 'Lumbar', 'Extremidad superior', 'Extremidad inferior', 'Dolor y aspectos psicosociales'];
+const FILTER_GROUPS   = [
+  { id: 'columna',     label: 'Columna' },
+  { id: 'es',          label: 'Extremidad superior' },
+  { id: 'ei',          label: 'Extremidad inferior' },
+  { id: 'transversal', label: 'Transversales' },
+];
+
+let currentCategoryFilter = 'all';
+
+function setCategoryFilter(group) {
+  currentCategoryFilter = currentCategoryFilter === group ? 'all' : group;
+  renderHome();
+}
+window.setCategoryFilter = setCategoryFilter;
+
+function _syncFilterChipsUI() {
+  document.querySelectorAll('.cat-filter-chip').forEach(btn => {
+    btn.classList.toggle('on', btn.dataset.group === currentCategoryFilter);
+  });
+}
+
 function renderHome() {
   const grid = document.getElementById('q-grid');
   grid.innerHTML = '';
 
-  QUESTIONNAIRES.forEach(q => {
-    const result = state.results.find(r => r.id === q.id);
-    const card = document.createElement('button');
-    card.className = 'q-card' + (result ? ' q-card--done' : '');
-    card.onclick = () => openQuestionnaire(q.id);
-    card.innerHTML = `
-      <div class="q-card-top">
-        <span class="q-card-abbr">${q.abbr}</span>
-        <span class="q-card-region">${q.region}</span>
-      </div>
-      <span class="q-card-name">${q.name}</span>
-      ${result ? `
-        <div class="q-card-bottom">
-          <span class="q-card-score" style="color:${result.color}">${result.formattedScore}</span>
-          <span role="button" class="btn-clear" title="Borrar resultado" aria-label="Borrar resultado">✕</span>
-        </div>
-        <span class="q-card-interp" style="color:${result.color}">${result.interpretation}</span>
-      ` : ''}
-    `;
-    if (result) {
-      card.querySelector('.btn-clear').onclick = e => {
-        e.stopPropagation();
-        confirmDeleteResult(q.id);
-      };
-    }
-    grid.appendChild(card);
+  const visible = QUESTIONNAIRES.filter(q => currentCategoryFilter === 'all' || q.filterGroup === currentCategoryFilter);
+  const byCategory = {};
+  visible.forEach(q => (byCategory[q.category] ??= []).push(q));
+
+  CATEGORY_ORDER.filter(cat => byCategory[cat]?.length).forEach(cat => {
+    const section = document.createElement('div');
+    section.className = 'category-section';
+    const catGrid = document.createElement('div');
+    catGrid.className = 'category-grid';
+    byCategory[cat].forEach(q => catGrid.appendChild(_buildCard(q)));
+    section.innerHTML = `<div class="category-title">${cat}</div>`;
+    section.appendChild(catGrid);
+    grid.appendChild(section);
   });
 
+  if (!visible.length) grid.innerHTML = '<div class="no-results-notice">Sin cuestionarios para este filtro</div>';
+
+  _syncFilterChipsUI();
   _updateCopyBtn();
 }
+
+function _buildCard(q) {
+  const result = state.results.find(r => r.id === q.id);
+  const card = document.createElement('button');
+  card.className = 'q-card' + (result ? ' q-card--done' : '');
+  card.onclick = () => openQuestionnaire(q.id);
+  card.innerHTML = `
+    <span role="button" class="q-card-info" title="Información" aria-label="Información">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+    </span>
+    <div class="q-card-top">
+      <span class="q-card-abbr">${q.abbr}</span>
+    </div>
+    ${result ? `
+      <div class="q-card-bottom">
+        <span class="q-card-score" style="color:${result.color}">${result.formattedScore}</span>
+        <span role="button" class="btn-clear" title="Borrar resultado" aria-label="Borrar resultado">✕</span>
+      </div>
+      <span class="q-card-interp" style="color:${result.color}">${result.interpretation}</span>
+    ` : ''}
+  `;
+  card.querySelector('.q-card-info').onclick = e => {
+    e.stopPropagation();
+    showQuestionnaireInfo(q.id);
+  };
+  if (result) {
+    card.querySelector('.btn-clear').onclick = e => {
+      e.stopPropagation();
+      confirmDeleteResult(q.id);
+    };
+  }
+  return card;
+}
+
+function showQuestionnaireInfo(id) {
+  const q = QUESTIONNAIRES.find(q => q.id === id);
+  if (!q) return;
+  const existing = document.getElementById('infoDialog');
+  if (existing) existing.remove();
+  const overlay = document.createElement('div');
+  overlay.className = 'confirm-banner';
+  overlay.id = 'infoDialog';
+  overlay.innerHTML = `
+    <div class="confirm-box" onclick="event.stopPropagation()">
+      <div class="confirm-box-title">${q.name}</div>
+      <div class="confirm-box-text">${q.description}</div>
+      <div class="confirm-box-btns">
+        <button class="confirm-btn-cancel" id="infoDialogClose">Cerrar</button>
+      </div>
+    </div>`;
+  document.body.appendChild(overlay);
+  lockBodyScroll();
+  window.parent.postMessage({ type: 'PHYSIQ_WIDGET_HIDE' }, '*');
+  const dismiss = () => { overlay.remove(); unlockBodyScroll(); window.parent.postMessage({ type: 'PHYSIQ_WIDGET_SHOW' }, '*'); };
+  overlay.onclick = dismiss;
+  document.getElementById('infoDialogClose').onclick = dismiss;
+}
+window.showQuestionnaireInfo = showQuestionnaireInfo;
 
 function _updateCopyBtn() {
   const btn = document.getElementById('copyResultsBtn');
@@ -645,6 +716,12 @@ function _closeAllOverlays() {
   const banner = document.getElementById('confirmBanner');
   if (banner) {
     banner.remove();
+    unlockBodyScroll();
+    window.parent.postMessage({ type: 'PHYSIQ_WIDGET_SHOW' }, '*');
+  }
+  const info = document.getElementById('infoDialog');
+  if (info) {
+    info.remove();
     unlockBodyScroll();
     window.parent.postMessage({ type: 'PHYSIQ_WIDGET_SHOW' }, '*');
   }
