@@ -606,13 +606,7 @@ function _buildLegend(q) {
     <div class="res-legend-row"><span style="color:#f59e0b">21–40</span><span>Autoeficacia moderada</span></div>
     <div class="res-legend-row"><span style="color:#38d9a9">41–60</span><span>Autoeficacia alta</span></div>
   `;
-  if (q.id === 'quickdash') return `
-    <div class="res-legend-row"><span style="color:#38d9a9">0–25</span><span>Sin/mínima discapacidad</span></div>
-    <div class="res-legend-row"><span style="color:#f59e0b">26–50</span><span>Leve–moderada</span></div>
-    <div class="res-legend-row"><span style="color:#fb923c">51–75</span><span>Moderada–grave</span></div>
-    <div class="res-legend-row"><span style="color:#ef4444">76–100</span><span>Grave</span></div>
-  `;
-  if (q.id === 'efei') return `
+  if (q.id === 'efes' || q.id === 'efei') return `
     <div class="res-legend-row"><span style="color:#ef4444">0–20</span><span>Función muy limitada</span></div>
     <div class="res-legend-row"><span style="color:#fb923c">21–40</span><span>Función limitada</span></div>
     <div class="res-legend-row"><span style="color:#f59e0b">41–60</span><span>Moderadamente limitada</span></div>
