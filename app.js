@@ -368,7 +368,6 @@ function renderHome() {
         <span class="q-card-region">${q.region}</span>
       </div>
       <span class="q-card-name">${q.name}</span>
-      <span class="q-card-desc">${q.description}</span>
       ${result ? `
         <div class="q-card-bottom">
           <span class="q-card-score" style="color:${result.color}">${result.formattedScore}</span>
