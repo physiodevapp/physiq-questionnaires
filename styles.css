@@ -249,9 +249,11 @@ html, body {
 }
 
 .qv-footer {
-  padding: 1rem 1.25rem 0;
+  padding: 0 1.25rem 1rem;
   position: sticky;
   bottom: env(safe-area-inset-bottom, 0);
+  background: linear-gradient(to bottom, transparent, var(--bg) 1.5rem);
+  padding-top: 1.5rem;
 }
 
 /* ── Question item ──────────────────────────────────────────── */
