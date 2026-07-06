@@ -46,8 +46,6 @@ html, body {
   .app-header {
     width: 100vw;
     margin-left: calc((640px - 100vw) / 2);
-    padding-left: calc((100vw - 640px) / 2 + 1.25rem);
-    padding-right: calc((100vw - 640px) / 2 + 1.25rem);
   }
 }
 
