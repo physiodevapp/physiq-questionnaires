@@ -472,6 +472,7 @@ function _buildCard(q) {
       <span class="q-card-interp" style="color:${result.color}">${result.interpretation}</span>
     ` : `
       <span class="q-card-score q-card-score--pending">-/${_maxScore(q)}</span>
+      <span class="q-card-interp q-card-interp--empty">Sin resultado</span>
     `}
   `;
   if (result) {

@@ -571,6 +571,10 @@ html, body {
 .q-card-interp {
   font-size: 0.72rem;
 }
+.q-card-interp--empty {
+  color: var(--text3);
+  opacity: 0.4;
+}
 
 /* ── Questionnaire view ─────────────────────────────────────── */
 #view-questionnaire, #view-result {
@@ -619,8 +623,8 @@ html, body {
   font-size: 0.65rem;
   color: var(--accent);
   letter-spacing: 0.02em;
-  border: 1px solid rgba(245, 158, 11, 0.3);
-  background: rgba(245, 158, 11, 0.08);
+  border: 1px solid rgba(20, 184, 166, 0.3);
+  background: rgba(20, 184, 166, 0.08);
   padding: 4px 9px;
   border-radius: 6px;
   white-space: nowrap;
@@ -702,8 +706,8 @@ html, body {
   cursor: pointer;
 }
 .qi-option input:checked + .qi-option-label {
-  border-color: rgba(245, 158, 11, 0.55);
-  background: rgba(245, 158, 11, 0.07);
+  border-color: rgba(20, 184, 166, 0.55);
+  background: rgba(20, 184, 166, 0.07);
 }
 .qi-option-score {
   font-family: 'DM Mono', monospace;
@@ -756,7 +760,7 @@ html, body {
   width: 22px; height: 22px;
   border-radius: 50%;
   background: var(--accent);
-  box-shadow: 0 2px 8px rgba(245, 158, 11, 0.4);
+  box-shadow: 0 2px 8px rgba(20, 184, 166, 0.4);
   cursor: pointer;
 }
 .qi-slider::-moz-range-thumb {
