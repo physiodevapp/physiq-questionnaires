@@ -46,7 +46,10 @@ html, body {
   .app-header {
     width: 100vw;
     margin-left: calc((640px - 100vw) / 2);
+    height: 64px;
+    padding: 0 1.5rem;
   }
+  .logo-main, .logo-sub { font-size: 1.5rem; }
 }
 
 .logo { display: flex; align-items: baseline; gap: 4px; }
