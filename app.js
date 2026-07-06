@@ -102,14 +102,39 @@ function _broadcastResults() {
   _bc.postMessage({ type: 'SESSION_QUESTIONNAIRE', questionnaires: state.results.length ? state.results : null });
 }
 
+// ── Hub history helpers ───────────────────────────────────────────────────────
+let _firstVisible = true;
+let _activeView   = 'home'; // 'home' | 'questionnaire' | 'result'
+
+function _inHub() { return document.body.classList.contains('in-hub'); }
+
+function _rebuildHubHistory() {
+  history.replaceState({ view: 'hub-exit' }, '');
+  history.pushState({ view: 'home' }, '');
+  if (_activeView !== 'home') history.pushState({ view: _activeView }, '');
+}
+
+window.addEventListener('popstate', e => {
+  if (e.state?.view === 'hub-exit' && _inHub()) {
+    window.parent.postMessage({ type: 'PHYSIQ_GO_HOME' }, '*');
+    return;
+  }
+  if (e.state?.view === 'home' || e.state?.view === 'questionnaire') {
+    goHome(true);
+  }
+});
+
 // ── Routing ───────────────────────────────────────────────────────────────────
-function goHome() {
+function goHome(fromPopstate) {
+  const wasAtHome = _activeView === 'home';
+  _activeView = 'home';
   state.activeId = null;
   state.answers  = [];
   document.getElementById('view-home').hidden         = false;
   document.getElementById('view-questionnaire').hidden = true;
   document.getElementById('view-result').hidden        = true;
   renderHome();
+  if (!fromPopstate && !wasAtHome && _inHub()) history.back();
 }
 
 function openQuestionnaire(id) {
@@ -125,6 +150,8 @@ function openQuestionnaire(id) {
   document.getElementById('view-home').hidden          = true;
   document.getElementById('view-questionnaire').hidden = false;
   document.getElementById('view-result').hidden        = true;
+  _activeView = 'questionnaire';
+  if (_inHub()) history.pushState({ view: 'questionnaire' }, '');
   renderQuestionnaire(q);
 }
 
@@ -641,6 +668,8 @@ function showResult(result, q) {
   document.getElementById('view-home').hidden          = true;
   document.getElementById('view-questionnaire').hidden = true;
   document.getElementById('view-result').hidden        = false;
+  _activeView = 'result';
+  if (_inHub()) history.replaceState({ view: 'result' }, '');
 
   const el = document.getElementById('view-result');
   el.innerHTML = `
@@ -755,6 +784,10 @@ function _closeAllOverlays() {
 
 window.addEventListener('message', e => {
   if (e.data?.type === 'PHYSIQ_SAT_HIDDEN') _closeAllOverlays();
+  if (e.data?.type === 'PHYSIQ_SAT_VISIBLE' && _inHub()) {
+    if (_firstVisible) { _firstVisible = false; return; }
+    _rebuildHubHistory();
+  }
 });
 
 // ── Boot ──────────────────────────────────────────────────────────────────────
@@ -763,6 +796,10 @@ if ('serviceWorker' in navigator) {
 }
 
 (async () => {
+  if (_inHub()) {
+    history.replaceState({ view: 'hub-exit' }, '');
+    history.pushState({ view: 'home' }, '');
+  }
   await _loadFromSession();
   _updateSessionChip();
   _updateResetBtn();
