@@ -477,17 +477,17 @@ html, body {
   align-items: center;
   justify-content: center;
   background: transparent;
-  border: 1px solid var(--border);
+  border: none;
   color: var(--text3);
   cursor: pointer;
-  transition: border-color 0.2s, color 0.2s;
+  transition: color 0.2s;
   flex-shrink: 0;
 }
-.q-card-info:hover { border-color: var(--accent); color: var(--accent); }
+.q-card-info:hover { color: var(--accent); }
 
 .q-card-view {
   position: absolute;
-  bottom: 10px;
+  top: 10px;
   right: 10px;
   display: flex;
   align-items: center;
@@ -502,6 +502,26 @@ html, body {
   transition: color 0.15s, border-color 0.15s;
 }
 .q-card-view:active { color: var(--accent); border-color: var(--accent); }
+
+.q-card-delete {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 7px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  color: var(--text2);
+  font-size: 12px;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+}
+.q-card-delete:active { color: var(--danger); border-color: rgba(239,68,68,0.5); }
 
 .q-card-top {
   display: flex;
@@ -532,23 +552,6 @@ html, body {
 }
 .q-card-interp {
   font-size: 0.72rem;
-}
-.btn-clear {
-  background: transparent;
-  border: 1px solid var(--border);
-  color: var(--text2);
-  border-radius: 6px;
-  padding: 3px 7px;
-  font-size: 11px;
-  cursor: pointer;
-  transition: border-color 0.2s, color 0.2s;
-  line-height: 1;
-  -webkit-tap-highlight-color: transparent;
-  flex-shrink: 0;
-}
-.btn-clear:hover, .btn-clear:active {
-  border-color: rgba(239, 68, 68, 0.5);
-  color: var(--danger);
 }
 
 /* ── Questionnaire view ─────────────────────────────────────── */

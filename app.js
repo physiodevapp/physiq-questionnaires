@@ -425,37 +425,41 @@ function _buildCard(q) {
   card.className = 'q-card' + (result ? ' q-card--done' : '');
   card.onclick = () => openQuestionnaire(q.id);
   card.innerHTML = `
-    <span role="button" class="q-card-info" title="Información" aria-label="Información">
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-    </span>
-    <div class="q-card-top">
-      <span class="q-card-abbr">${q.abbr}</span>
-    </div>
     ${result ? `
       <span role="button" class="q-card-view" title="Ver respuestas" aria-label="Ver respuestas">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
       </span>
+      <span role="button" class="q-card-delete" title="Borrar resultado" aria-label="Borrar resultado">✕</span>
+    ` : `
+      <span role="button" class="q-card-info" title="Información" aria-label="Información">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+      </span>
+    `}
+    <div class="q-card-top">
+      <span class="q-card-abbr">${q.abbr}</span>
+    </div>
+    ${result ? `
       <div class="q-card-score-row">
         <span class="q-card-score" style="color:${result.color}">${result.formattedScore}</span>
-        <span role="button" class="btn-clear q-card-delete" title="Borrar resultado" aria-label="Borrar resultado">✕</span>
       </div>
       <span class="q-card-interp" style="color:${result.color}">${result.interpretation}</span>
     ` : `
       <span class="q-card-score q-card-score--pending">-/${_maxScore(q)}</span>
     `}
   `;
-  card.querySelector('.q-card-info').onclick = e => {
-    e.stopPropagation();
-    showQuestionnaireInfo(q.id);
-  };
   if (result) {
     card.querySelector('.q-card-view').onclick = e => {
       e.stopPropagation();
       openQuestionnaire(q.id);
     };
-    card.querySelector('.btn-clear').onclick = e => {
+    card.querySelector('.q-card-delete').onclick = e => {
       e.stopPropagation();
       confirmDeleteResult(q.id);
+    };
+  } else {
+    card.querySelector('.q-card-info').onclick = e => {
+      e.stopPropagation();
+      showQuestionnaireInfo(q.id);
     };
   }
   return card;
