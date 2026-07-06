@@ -407,7 +407,10 @@ function renderGlobalSummary() {
   if (!card) return;
   if (!state.results.length) { card.style.display = 'none'; return; }
   chips.innerHTML = state.results.map(r => `
-    <span class="result-chip" style="color:${r.color};border-color:${r.color}" onclick="openQuestionnaire('${r.id}')">${r.abbr}</span>
+    <span class="result-chip" style="color:${r.color};border-color:${r.color}" onclick="openQuestionnaire('${r.id}')">
+      ${r.abbr}
+      <span role="button" class="chip-clear" onclick="event.stopPropagation();confirmDeleteResult('${r.id}')">✕</span>
+    </span>
   `).join('');
   card.style.display = 'block';
 }
@@ -429,6 +432,9 @@ function _buildCard(q) {
       <span class="q-card-abbr">${q.abbr}</span>
     </div>
     ${result ? `
+      <span role="button" class="q-card-view" title="Ver respuestas" aria-label="Ver respuestas">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+      </span>
       <div class="q-card-score-row">
         <span class="q-card-score" style="color:${result.color}">${result.formattedScore}</span>
         <span role="button" class="btn-clear q-card-delete" title="Borrar resultado" aria-label="Borrar resultado">✕</span>
@@ -443,6 +449,10 @@ function _buildCard(q) {
     showQuestionnaireInfo(q.id);
   };
   if (result) {
+    card.querySelector('.q-card-view').onclick = e => {
+      e.stopPropagation();
+      openQuestionnaire(q.id);
+    };
     card.querySelector('.btn-clear').onclick = e => {
       e.stopPropagation();
       confirmDeleteResult(q.id);

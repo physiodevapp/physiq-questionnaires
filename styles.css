@@ -319,6 +319,18 @@ html, body {
   transition: opacity 0.15s;
 }
 .result-chip:hover { opacity: 0.8; }
+.result-chip .chip-clear {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  color: inherit;
+  opacity: 0.6;
+  transition: color 0.15s, opacity 0.15s, background 0.15s;
+}
+.result-chip .chip-clear:hover { color: var(--danger); opacity: 1; background: rgba(239,68,68,0.12); }
 
 .btn-copy {
   background: none;
@@ -472,6 +484,24 @@ html, body {
   flex-shrink: 0;
 }
 .q-card-info:hover { border-color: var(--accent); color: var(--accent); }
+
+.q-card-view {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  color: var(--text2);
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+}
+.q-card-view:active { color: var(--accent); border-color: var(--accent); }
 
 .q-card-top {
   display: flex;
