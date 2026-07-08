@@ -832,6 +832,9 @@ html, body {
   padding: 1rem 1.25rem 0.75rem;
   border-bottom: 1px solid var(--border);
 }
+.res-header .qv-abbr {
+  flex: none;
+}
 
 .risk-banner {
   margin: 1.25rem 1.25rem 0;
