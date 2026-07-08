@@ -546,7 +546,8 @@ function showCopyFeedback() {
 }
 
 function renderQuestionnaire(q) {
-  const hasSavedResult = !!state.results.find(r => r.id === q.id);
+  const existingResult = state.results.find(r => r.id === q.id);
+  const hasSavedResult = !!existingResult;
   const container = document.getElementById('view-questionnaire');
   container.innerHTML = `
     <div class="qv-header">
@@ -556,9 +557,9 @@ function renderQuestionnaire(q) {
           <button class="qv-result-btn" onclick="showStoredResult('${q.id}')" title="Ver resultado" aria-label="Ver resultado">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
           </button>
-          <span class="qv-name-badge">${q.abbr}</span>
+          <span class="qv-name-badge"><span id="qv-score-dot" style="width:6px;height:6px;border-radius:50%;flex-shrink:0;display:inline-block;background:${existingResult.color}"></span>${q.abbr}</span>
         </div>
-      ` : `<span class="qv-name-badge">${q.abbr}</span>`}
+      ` : `<span class="qv-name-badge"><span id="qv-score-dot" style="width:6px;height:6px;border-radius:50%;flex-shrink:0;display:none;background:transparent"></span>${q.abbr}</span>`}
     </div>
     ${q.note ? `<p class="qv-note">${q.note}</p>` : ''}
     <div class="qv-items" id="qv-items"></div>
@@ -615,6 +616,7 @@ function setSliderValue(v) {
   });
   const q = QUESTIONNAIRES.find(q => q.id === state.activeId);
   if (q) updateSubmitBtn(q);
+  _updateScoreDot();
 }
 
 function renderRadioItem(q, item, idx, container) {
@@ -640,6 +642,20 @@ function selectAnswer(idx, val) {
   state.answers[idx] = val;
   const q = QUESTIONNAIRES.find(q => q.id === state.activeId);
   if (q) updateSubmitBtn(q);
+  _updateScoreDot();
+}
+
+function _updateScoreDot() {
+  const q = QUESTIONNAIRES.find(q => q.id === state.activeId);
+  if (!q) return;
+  const answered = state.answers.filter(v => v !== undefined).length;
+  if (answered < q.items.length) return;
+  const rawScore = q.score(state.answers);
+  const interp = q.interpret(rawScore, state.answers);
+  const dot = document.getElementById('qv-score-dot');
+  if (!dot) return;
+  dot.style.background = interp.color;
+  dot.style.display = 'inline-block';
 }
 
 function updateSubmitBtn(q) {
