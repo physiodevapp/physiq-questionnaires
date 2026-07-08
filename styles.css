@@ -635,6 +635,39 @@ html, body {
   flex-shrink: 0;
 }
 
+.qv-header-end {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+.qv-header-end .qv-name-badge {
+  margin-left: 0;
+}
+
+.qv-result-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid rgba(20, 184, 166, 0.3);
+  color: var(--accent);
+  border-radius: 6px;
+  padding: 4px 6px;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+  flex-shrink: 0;
+}
+.qv-result-btn:hover {
+  background: rgba(20, 184, 166, 0.08);
+  border-color: var(--accent);
+}
+.qv-result-btn:active {
+  color: #fff;
+  background: rgba(20, 184, 166, 0.2);
+}
+
 .qv-note {
   font-size: 0.82rem;
   color: var(--text2);
