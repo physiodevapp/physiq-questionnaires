@@ -453,8 +453,8 @@ function _buildCard(q) {
   card.onclick = () => openQuestionnaire(q.id);
   card.innerHTML = `
     ${result ? `
-      <span role="button" class="q-card-view" title="Ver respuestas" aria-label="Ver respuestas">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+      <span role="button" class="q-card-view" title="Ver resultado" aria-label="Ver resultado">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
       </span>
       <span role="button" class="q-card-delete" title="Borrar resultado" aria-label="Borrar resultado">✕</span>
     ` : `
@@ -478,7 +478,7 @@ function _buildCard(q) {
   if (result) {
     card.querySelector('.q-card-view').onclick = e => {
       e.stopPropagation();
-      openQuestionnaire(q.id);
+      showResult(result, q);
     };
     card.querySelector('.q-card-delete').onclick = e => {
       e.stopPropagation();
@@ -492,6 +492,13 @@ function _buildCard(q) {
   }
   return card;
 }
+
+function showStoredResult(id) {
+  const q = QUESTIONNAIRES.find(q => q.id === id);
+  const result = state.results.find(r => r.id === id);
+  if (q && result) showResult(result, q);
+}
+window.showStoredResult = showStoredResult;
 
 function showQuestionnaireInfo(id) {
   const q = QUESTIONNAIRES.find(q => q.id === id);
@@ -539,11 +546,19 @@ function showCopyFeedback() {
 }
 
 function renderQuestionnaire(q) {
+  const hasSavedResult = !!state.results.find(r => r.id === q.id);
   const container = document.getElementById('view-questionnaire');
   container.innerHTML = `
     <div class="qv-header">
       <button class="btn-back" onclick="goHome()">← Cuestionarios</button>
-      <span class="qv-name-badge">${q.abbr}</span>
+      ${hasSavedResult ? `
+        <div class="qv-header-end">
+          <button class="qv-result-btn" onclick="showStoredResult('${q.id}')" title="Ver resultado" aria-label="Ver resultado">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          </button>
+          <span class="qv-name-badge">${q.abbr}</span>
+        </div>
+      ` : `<span class="qv-name-badge">${q.abbr}</span>`}
     </div>
     ${q.note ? `<p class="qv-note">${q.note}</p>` : ''}
     <div class="qv-items" id="qv-items"></div>
