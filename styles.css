@@ -574,6 +574,9 @@ html, body {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+.q-card-interp:not(.q-card-interp--empty) {
+  padding-right: 28px;
+}
 .q-card-interp--empty {
   color: var(--text3);
   opacity: 0.4;
