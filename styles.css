@@ -834,6 +834,19 @@ html, body {
 }
 .res-header .qv-abbr {
   flex: none;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--accent);
+  border: 1px solid rgba(20,184,166,0.3);
+  background: rgba(20,184,166,0.08);
+  padding: 5px 10px;
+  border-radius: 6px;
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .risk-banner {

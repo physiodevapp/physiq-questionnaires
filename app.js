@@ -676,7 +676,7 @@ function showResult(result, q) {
   el.innerHTML = `
     <div class="res-header">
       <button class="btn-back" onclick="goHome()">← Cuestionarios</button>
-      <span class="qv-abbr">${result.abbr}</span>
+      <span class="qv-abbr"><span style="width:6px;height:6px;border-radius:50%;background:${result.color};flex-shrink:0;display:inline-block"></span>${result.abbr}</span>
     </div>
     ${result.risk ? `
       <div class="risk-banner">
