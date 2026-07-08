@@ -570,6 +570,9 @@ html, body {
 }
 .q-card-interp {
   font-size: 0.72rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .q-card-interp--empty {
   color: var(--text3);
