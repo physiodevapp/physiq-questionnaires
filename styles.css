@@ -326,15 +326,25 @@ html, body {
 }
 .result-chips { display: flex; flex-wrap: wrap; gap: 6px; padding: 12px 16px; }
 .result-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
   background: var(--surface2);
-  border: 1px solid var(--border);
+  border: 1px solid var(--accent);
   border-radius: 20px;
   padding: 5px 12px;
   font-family: 'DM Mono', monospace;
   font-size: 11px;
   font-weight: 600;
+  color: var(--accent);
   cursor: pointer;
   transition: opacity 0.15s;
+}
+.chip-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
 }
 .result-chip:hover { opacity: 0.8; }
 .result-chip .chip-clear {
