@@ -434,7 +434,8 @@ function renderGlobalSummary() {
   if (!card) return;
   if (!state.results.length) { card.style.display = 'none'; return; }
   chips.innerHTML = state.results.map(r => `
-    <span class="result-chip" style="color:${r.color};border-color:${r.color}" onclick="openQuestionnaire('${r.id}')">
+    <span class="result-chip" onclick="openQuestionnaire('${r.id}')">
+      <span class="chip-dot" style="background:${r.color}"></span>
       ${r.abbr}
       <span role="button" class="chip-clear" onclick="event.stopPropagation();confirmDeleteResult('${r.id}')">✕</span>
     </span>
