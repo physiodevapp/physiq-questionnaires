@@ -119,6 +119,16 @@ window.addEventListener('popstate', e => {
     window.parent.postMessage({ type: 'PHYSIQ_GO_HOME' }, '*');
     return;
   }
+  if (e.state?.view === 'questionnaire' && state.activeId) {
+    const q = QUESTIONNAIRES.find(q => q.id === state.activeId);
+    if (q) {
+      document.getElementById('view-home').hidden          = true;
+      document.getElementById('view-questionnaire').hidden = false;
+      document.getElementById('view-result').hidden        = true;
+      _activeView = 'questionnaire';
+      return;
+    }
+  }
   if (e.state?.view === 'home' || e.state?.view === 'questionnaire') {
     goHome(true);
   }
@@ -701,8 +711,8 @@ function showResult(result, q) {
   document.getElementById('view-home').hidden          = true;
   document.getElementById('view-questionnaire').hidden = true;
   document.getElementById('view-result').hidden        = false;
+  if (_inHub()) history.pushState({ view: 'result' }, '');
   _activeView = 'result';
-  if (_inHub()) history.replaceState({ view: 'result' }, '');
 
   const el = document.getElementById('view-result');
   el.innerHTML = `
