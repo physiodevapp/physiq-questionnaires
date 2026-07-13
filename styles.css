@@ -51,23 +51,20 @@ html, body {
 }
 @media (max-width: 768px) {
   .app-header { height: 52px; padding: 0 1rem; }
-  .logo-main, .logo-sub { font-size: 1.2rem; }
 }
 @media (max-width: 480px) {
   .app-header { height: 48px; }
-  .logo-main, .logo-sub { font-size: 1.1rem; }
 }
 @media (max-height: 500px) and (max-width: 900px) {
   .app-header { height: 44px; }
 }
 
-.logo { display: flex; align-items: baseline; gap: 4px; }
+.logo { display: flex; align-items: baseline; gap: 6px; }
 .logo-main {
   font-family: 'DM Serif Display', serif;
   font-size: 1.5rem;
-  font-weight: 400;
-  color: #fff;
-  letter-spacing: -0.02em;
+  color: #e8edf5;
+  letter-spacing: -0.5px;
 }
 .logo-q {
   background: linear-gradient(135deg, #4f9cf9, #38d9a9);
@@ -79,9 +76,15 @@ html, body {
   font-family: 'DM Serif Display', serif;
   font-size: 1.5rem;
   color: var(--accent);
-  letter-spacing: -0.02em;
+  letter-spacing: -0.5px;
 }
 .logo-sub-initial { display: none; }
+@media (max-width: 768px) {
+  .logo-main, .logo-sub { font-size: 1.2rem; }
+}
+@media (max-width: 480px) {
+  .logo-main, .logo-sub { font-size: 1.1rem; }
+}
 @media (max-width: 360px) {
   .logo-sub-word    { display: none; }
   .logo-sub-initial { display: inline; }
@@ -103,7 +106,7 @@ html, body {
 }
 .in-hub .logo-main:hover { opacity: 0.75; }
 
-.header-right { display: flex; align-items: center; gap: 0.6rem; }
+.header-right { display: flex; align-items: center; gap: 0.75rem; }
 
 .btn-reset {
   background: transparent;
